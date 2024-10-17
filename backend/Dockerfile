@@ -14,12 +14,13 @@ COPY ./core/.air.toml ./
 RUN apk add --no-cache shadow
 RUN apk add --no-cache bash
 
+RUN adduser --disabled-password --gecos "" vscode
+RUN groupadd docker
+RUN usermod -aG docker vscode
 
-# RUN adduser --disabled-password --gecos "" vscode
-# RUN groupadd docker
-# RUN usermod -aG docker vscode
-
-
+USER root
+RUN mkdir -p /home/vscode/.vscode-server && \
+    chown -R vscode:vscode /home/vscode/.vscode-server
 
 USER vscode
 

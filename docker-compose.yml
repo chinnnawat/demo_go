@@ -8,7 +8,7 @@ services:
       - "8080:8080"
     volumes:
       - ./backend/core:/app
-      - ${HOME}/.vscode-server-backend-core:/home/vscode/.vscode-server
+      - ${HOME}/.vscode-server-backend_go:/home/vscode/.vscode-server
     environment:
       - AIR_WATCH_DELAY=500ms
       - DB_HOST=postgres
