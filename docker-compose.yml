@@ -1,0 +1,43 @@
+services:
+  backend:
+    container_name: "backend_go"
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/core:/app
+      - ${HOME}/.vscode-server-backend-core:/home/vscode/.vscode-server
+    environment:
+      - AIR_WATCH_DELAY=500ms
+      - DB_HOST=postgres
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PORT=5432
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - postgres
+    networks:
+      - main
+
+  postgres:
+    image: postgres
+    container_name: postgresDB_golang
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
+
+volumes:
+  postgres-db:
