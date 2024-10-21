@@ -17,15 +17,14 @@ RUN adduser --disabled-password --gecos "" vscode
 RUN groupadd docker
 RUN usermod -aG docker vscode
 
-# แก้ไขสิทธิ์ของโฟลเดอร์ต่างๆ และแน่ใจว่าผู้ใช้ vscode สามารถเข้าถึงได้
 USER root
 RUN mkdir -p /go/pkg/mod && \
     chown -R vscode:vscode /go/pkg/mod && \
     chown -R vscode:vscode /go/pkg && \
     mkdir -p /home/vscode/.vscode-server && \
     chown -R vscode:vscode /home/vscode/.vscode-server && \
-    chown -R vscode:vscode /app && \
-    chmod -R 755 /app/models /app/tmp
+    chown -R vscode:vscode /app
+    # chmod -R 777 /app/models /app/tmp
 
 USER vscode
 
