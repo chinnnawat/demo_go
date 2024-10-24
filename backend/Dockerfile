@@ -1,31 +1,9 @@
-FROM golang:1.23-alpine
+FROM golang:1.23 as base
+
+FROM base as dev
+
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
 
 WORKDIR /app
+CMD ["air"]
 
-RUN go install github.com/air-verse/air@latest
-
-COPY ./core/go.mod ./
-COPY ./core/go.sum ./
-RUN go mod download
-
-COPY ./core ./
-COPY ./core/.air.toml ./
-
-RUN apk add --no-cache shadow bash libstdc++ gcc g++
-
-RUN adduser --disabled-password --gecos "" vscode
-RUN groupadd docker
-RUN usermod -aG docker vscode
-
-USER root
-RUN mkdir -p /go/pkg/mod && \
-    chown -R vscode:vscode /go/pkg/mod && \
-    chown -R vscode:vscode /go/pkg && \
-    mkdir -p /home/vscode/.vscode-server && \
-    chown -R vscode:vscode /home/vscode/.vscode-server && \
-    chown -R vscode:vscode /app
-    # chmod -R 777 /app/models /app/tmp
-
-USER vscode
-
-CMD ["air", "-c", ".air.toml"]
