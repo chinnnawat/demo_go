@@ -21,10 +21,8 @@ services:
     networks:
       - main
 
-
   postgres:
-    image: postgres
-    container_name: postgresDB_golang
+    image: postgres:16
     ports:
       - "5432:5432"
     volumes:
@@ -35,7 +33,6 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     networks:
       - main
-
 
 networks:
   main:
